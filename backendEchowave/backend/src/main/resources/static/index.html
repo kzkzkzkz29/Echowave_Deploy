@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EchoWave | Session Audio Player</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="app-container">
+    <!-- Header Section -->
+    <header class="app-header">
+        <div class="logo-container">
+            <i class="fas fa-wave-square logo-icon"></i>
+            <h1 class="logo-text">Echo<span>Wave</span></h1>
+        </div>
+        <div class="session-info">
+            <span id="sessionStatus">New Session</span>
+            <button id="helpBtn" class="icon-btn" title="Help">
+                <i class="fas fa-question-circle"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="content-area">
+        <!-- Upload Section -->
+        <section class="upload-section card">
+            <h2><i class="fas fa-cloud-upload-alt"></i> Upload Audio</h2>
+            <form id="uploadForm" class="upload-form">
+                <div class="file-drop-area" id="dropZone">
+                    <div class="file-input-wrapper">
+                        <input type="file" id="audioFile" name="file" accept="audio/*" class="file-input">
+                        <label for="audioFile" class="file-label">
+                            <i class="fas fa-music"></i>
+                            <span id="fileName">Choose or drag an audio file</span>
+                            <span class="file-requirements">(MP3, WAV, OGG, AAC up to 100MB)</span>
+                        </label>
+                    </div>
+                </div>
+                <button type="submit" class="upload-btn" id="uploadBtn" disabled>
+                    <i class="fas fa-upload"></i> Upload
+                </button>
+            </form>
+            <div id="uploadProgress" class="progress-container hidden">
+                <div class="progress-bar" id="progressBar"></div>
+                <span class="progress-text" id="progressText">0%</span>
+            </div>
+            <div id="message" class="message hidden"></div>
+        </section>
+
+        <!-- Player Section -->
+        <section class="player-section card hidden" id="playerSection">
+            <h2><i class="fas fa-play-circle"></i> Now Playing</h2>
+            <div class="player-container">
+                <div class="track-info">
+                    <div class="cover-art" id="coverArt">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <div class="track-details">
+                        <h3 id="trackTitle">No track loaded</h3>
+                        <p id="trackDetails">Select an audio file to begin</p>
+                    </div>
+                </div>
+
+                <audio id="audioPlayer"></audio>
+
+                <div class="player-controls">
+                    <button class="control-btn" id="playPauseBtn" disabled>
+                        <i class="fas fa-play"></i>
+                    </button>
+                    <div class="progress-container">
+                        <span id="currentTime">0:00</span>
+                        <input type="range" id="progressSlider" class="progress-slider" value="0" disabled>
+                        <span id="duration">0:00</span>
+                    </div>
+                    <button class="control-btn" id="muteBtn" disabled>
+                        <i class="fas fa-volume-up"></i>
+                    </button>
+                    <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.01" value="0.7" disabled>
+                </div>
+
+                <div class="secondary-controls">
+                    <button class="icon-btn" id="downloadBtn" title="Download" disabled>
+                        <i class="fas fa-download"></i>
+                    </button>
+                    <button class="icon-btn" id="metadataBtn" title="Track Info">
+                        <i class="fas fa-info-circle"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <p>EchoWave v1.0 | Session-based audio player</p>
+        <p>Files are automatically deleted when you close the browser</p>
+    </footer>
+</div>
+
+<!-- Metadata Modal -->
+<div id="metadataModal" class="modal hidden">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h3><i class="fas fa-info-circle"></i> Track Information</h3>
+        <div class="metadata-grid" id="metadataDisplay">
+            <!-- Filled by JavaScript -->
+        </div>
+    </div>
+</div>
+
+<!-- Help Modal -->
+<div id="helpModal" class="modal hidden">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h3><i class="fas fa-question-circle"></i> EchoWave Help</h3>
+        <div class="help-content">
+            <h4>How to use:</h4>
+            <ol>
+                <li>Click "Choose File" or drag an audio file into the upload area</li>
+                <li>Click "Upload" to process your file</li>
+                <li>Use the player controls to play your audio</li>
+            </ol>
+
+            <h4>Features:</h4>
+            <ul>
+                <li>Supports MP3, WAV, OGG, and AAC formats</li>
+                <li>Files up to 100MB</li>
+                <li>Session-based - files are automatically deleted</li>
+                <li>Full playback controls</li>
+                <li>Volume adjustment</li>
+            </ul>
+
+            <p class="note"><strong>Note:</strong> Your audio files are only stored temporarily in your browser session and will be deleted when you close the browser.</p>
+        </div>
+    </div>
+</div>
+
+<script src="/js/script.js"></script>
+</body>
+</html>
