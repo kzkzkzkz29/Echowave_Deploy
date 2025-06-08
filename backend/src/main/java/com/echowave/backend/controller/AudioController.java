@@ -43,7 +43,7 @@ public class AudioController {
 
             if (!Archivo.isValidAudioType(file.getContentType())) {
                 response.put("status", "error");
-                response.put("message", "Formato de audio no soportado. Permitidos: MP3, WAV, OGG, WEBM, AAC");
+                response.put("message", "Formato de audio no soportado. Permitido: MP3");
                 response.put("receivedType", file.getContentType());
                 return ResponseEntity.badRequest().body(response);
             }

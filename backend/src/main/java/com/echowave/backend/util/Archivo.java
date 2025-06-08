@@ -15,7 +15,7 @@ import java.nio.file.*;
 public class Archivo {
 
     private static final String[] ALLOWED_MIME_TYPES = {
-            "audio/mpeg", "audio/wav", "audio/ogg", "audio/webm", "audio/aac"
+            "audio/mpeg"
     };
 
     public static boolean isValidAudioType(String contentType) {
