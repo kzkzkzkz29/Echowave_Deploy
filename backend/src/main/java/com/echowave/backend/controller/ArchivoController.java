@@ -1,0 +1,94 @@
+package com.echowave.backend.controller;
+
+import com.echowave.backend.service.ArchivoService;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api/archivo")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+public class ArchivoController {
+
+    private final ArchivoService archivoService;
+
+    public ArchivoController(ArchivoService archivoService) {
+        this.archivoService = archivoService;
+    }
+
+    @PostMapping("/upload")
+    public ResponseEntity<Map<String, Object>> subirAudio(
+            @RequestParam("file") MultipartFile archivo,
+            HttpSession session) {
+
+        Map<String, Object> respuesta = new HashMap<>();
+        respuesta.put("application", "EchoWave");
+        respuesta.put("version", "1.0");
+        respuesta.put("timestamp", System.currentTimeMillis());
+
+        try {
+            if (archivo.isEmpty()) {
+                respuesta.put("status", "error");
+                respuesta.put("message", "No se subió ningún archivo");
+                return ResponseEntity.badRequest().body(respuesta);
+            }
+
+            if (!archivoService.esTamanoValido(archivo.getSize())) {
+                respuesta.put("status", "error");
+                respuesta.put("message", "El archivo excede el límite de 100MB");
+                return ResponseEntity.badRequest().body(respuesta);
+            }
+
+            if (!archivoService.esTipoValido(archivo.getContentType())) {
+                respuesta.put("status", "error");
+                respuesta.put("message", "Formato de audio no soportado. Permitido: MP3");
+                respuesta.put("receivedType", archivo.getContentType());
+                return ResponseEntity.badRequest().body(respuesta);
+            }
+
+            archivoService.eliminarArchivoSesion(session);
+            File archivoTemporal = archivoService.guardarArchivoPersistente(archivo);
+
+            session.setAttribute("audioFile", archivoTemporal.getAbsolutePath());
+            session.setAttribute("originalFilename", archivo.getOriginalFilename());
+
+            respuesta.put("status", "success");
+            respuesta.put("message", "Archivo subido exitosamente");
+            respuesta.put("filename", archivo.getOriginalFilename());
+            respuesta.put("size", archivo.getSize());
+            respuesta.put("contentType", archivo.getContentType());
+            respuesta.put("sessionId", session.getId());
+            respuesta.put("tempPath", archivoTemporal.getAbsolutePath());
+
+            return ResponseEntity.ok(respuesta);
+
+        } catch (IOException e) {
+            respuesta.put("status", "error");
+            respuesta.put("message", "Error al procesar el archivo");
+            respuesta.put("errorDetails", e.getMessage());
+            return ResponseEntity.internalServerError().body(respuesta);
+        }
+    }
+
+    @GetMapping("/ultimo")
+    public ResponseEntity<Map<String, Object>> obtenerUltimoArchivo(HttpSession session) {
+        String path = (String) session.getAttribute("audioFile");
+        String nombre = (String) session.getAttribute("originalFilename");
+
+        if (path == null || nombre == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Map<String, Object> respuesta = new HashMap<>();
+        respuesta.put("filename", nombre);
+        respuesta.put("path", path);
+        return ResponseEntity.ok(respuesta);
+    }
+
+}

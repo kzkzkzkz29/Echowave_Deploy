@@ -1,5 +1,6 @@
 package com.echowave.backend;
 
+import com.echowave.backend.config.SessionCleanupListener;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
@@ -12,7 +13,8 @@ public class EchoWaveApplication {
 	}
 
 	@Bean
-	public ServletListenerRegistrationBean<SessionCleanupListener> sessionListener() {
-		return new ServletListenerRegistrationBean<>(new SessionCleanupListener());
+	public ServletListenerRegistrationBean<SessionCleanupListener> sessionListener(SessionCleanupListener listener) {
+		return new ServletListenerRegistrationBean<>(listener);
 	}
+
 }

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>EchoWave</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"/>
+    <style>
+        body {
+            background-color: #1e1b2e;
+            color: white;
+            font-family: 'Arial', sans-serif;
+        }
+        .song:hover {
+            background-color: #2e2b3e;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="p-6">
+<div class="max-w-3xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6 text-center">🎵 EchoWave</h1>
+
+    <form id="uploadForm" class="mb-6 flex items-center gap-4">
+        <input type="file" id="audioFile" name="file" accept="audio/*" class="bg-gray-700 p-2 rounded" required />
+        <button type="submit" class="bg-indigo-600 px-4 py-2 rounded hover:bg-indigo-700">Subir canción</button>
+    </form>
+
+    <div class="mb-4 flex gap-4">
+        <button onclick="shuffle()" class="bg-purple-600 px-3 py-1 rounded hover:bg-purple-700">Mezclar</button>
+        <button onclick="repeat()" class="bg-pink-600 px-3 py-1 rounded hover:bg-pink-700">Repetir</button>
+    </div>
+
+    <h2 class="text-xl font-semibold mb-2">🎧 Playlist</h2>
+    <ul id="playlist" class="space-y-2"></ul>
+
+    <audio id="audioPlayer" class="w-full mt-4" controls></audio>
+</div>
+
+<script src="App.js"></script>
+</body>
+</html>
