@@ -34,10 +34,7 @@ uploadForm.addEventListener('submit', async (e) => {
         credentials: 'include',
         body: JSON.stringify({
             fileName: uploadResult.filename,
-            path: uploadResult.tempPath,
-            titulo: uploadResult.filename,
-            artista: "Desconocido",
-            duracion: 200
+            url: uploadResult.path,
         })
     });
 
@@ -78,9 +75,16 @@ async function loadPlaylist() {
 }
 
 async function play(index) {
+    const res = await fetch('http://localhost:8080/api/playlist', {
+        credentials: 'include'
+    });
+
+    const data = await res.json();
+    if (!data[index]) return;
+
+    const song = data[index];
     audioPlayer.loop = false;
-    audioPlayer.src = `http://localhost:8080/api/reproductor/playlist/${index}`;
-    await fetch(audioPlayer.src, { credentials: 'include' }); // Esto inicia la solicitud con sesión
+    audioPlayer.src = song.url; // Reproducimos directamente el link de Firebase
     audioPlayer.play();
 }
 
