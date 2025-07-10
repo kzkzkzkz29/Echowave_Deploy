@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/reproductor")
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:63342"}, allowCredentials = "true")
 public class ReproductorController {
 
     private final ReproductorService reproductorService;
@@ -24,14 +24,18 @@ public class ReproductorController {
     }
 
     @GetMapping("/stream")
-    public ResponseEntity<Resource> reproducirArchivoSubido(HttpSession session) {
-        String filePath = (String) session.getAttribute("audioFile");
+    public ResponseEntity<Void> reproducirUltimoAudio(HttpSession session) {
+        String url = (String) session.getAttribute("audioFile");
         String filename = (String) session.getAttribute("originalFilename");
-        return reproductorService.reproducirDesdeArchivo(filePath, filename, session.getId(), false);
+
+        if (url == null || filename == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return reproductorService.reproducirDesdeUrl(url, filename, session.getId(), false);
     }
 
     @GetMapping("/playlist/{index}")
-    public ResponseEntity<Resource> reproducirDesdePlaylist(
+    public ResponseEntity<Void> reproducirDesdePlaylist(
             @PathVariable int index,
             @RequestParam(name = "repeat", required = false, defaultValue = "false") boolean repetir,
             HttpSession session) {
@@ -43,7 +47,7 @@ public class ReproductorController {
         }
 
         AudioDTO audio = playlist.get(index);
-        return reproductorService.reproducirDesdeArchivo(audio.getPath(), audio.getFileName(), session.getId(), repetir);
+        return reproductorService.reproducirDesdeUrl(audio.getUrl(), audio.getFileName(), session.getId(), repetir);
     }
 
 }

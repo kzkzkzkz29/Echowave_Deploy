@@ -12,7 +12,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/playlist")
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:63342"}, allowCredentials = "true")
 public class ListaReproduccionController {
 
     private final ListaReproduccionService listaReproduccionService;

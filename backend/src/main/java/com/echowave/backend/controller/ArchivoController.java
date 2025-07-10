@@ -1,6 +1,8 @@
 package com.echowave.backend.controller;
 
+import com.echowave.backend.entity.AudioEntity;
 import com.echowave.backend.service.ArchivoService;
+import com.echowave.backend.service.AudioService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,13 +15,15 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/archivo")
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:63342"}, allowCredentials = "true")
 public class ArchivoController {
 
     private final ArchivoService archivoService;
+    private final AudioService audioService;
 
-    public ArchivoController(ArchivoService archivoService) {
+    public ArchivoController(ArchivoService archivoService, AudioService audioService) {
         this.archivoService = archivoService;
+        this.audioService = audioService;
     }
 
     @PostMapping("/upload")
@@ -53,18 +57,22 @@ public class ArchivoController {
             }
 
             archivoService.eliminarArchivoSesion(session);
-            File archivoTemporal = archivoService.guardarArchivoPersistente(archivo);
 
-            session.setAttribute("audioFile", archivoTemporal.getAbsolutePath());
+            String url = archivoService.subirArchivo(archivo, session);
+
+            AudioEntity guardado = audioService.guardarAudio(
+                    archivo.getOriginalFilename(),
+                    url,
+                    session.getId()
+            );
+
+            session.setAttribute("audioFile", url);
             session.setAttribute("originalFilename", archivo.getOriginalFilename());
-
             respuesta.put("status", "success");
-            respuesta.put("message", "Archivo subido exitosamente");
-            respuesta.put("filename", archivo.getOriginalFilename());
-            respuesta.put("size", archivo.getSize());
-            respuesta.put("contentType", archivo.getContentType());
+            respuesta.put("message", "Archivo subido y guardado");
+            respuesta.put("filename", guardado.getFileName());
+            respuesta.put("path", guardado.getUrl());
             respuesta.put("sessionId", session.getId());
-            respuesta.put("tempPath", archivoTemporal.getAbsolutePath());
 
             return ResponseEntity.ok(respuesta);
 
