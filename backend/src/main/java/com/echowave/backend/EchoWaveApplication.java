@@ -16,5 +16,4 @@ public class EchoWaveApplication {
 	public ServletListenerRegistrationBean<SessionCleanupListener> sessionListener(SessionCleanupListener listener) {
 		return new ServletListenerRegistrationBean<>(listener);
 	}
-
 }
