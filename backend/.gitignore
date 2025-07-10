@@ -1,1 +1,19 @@
 src/main/resources/firebase/echowave-b2c81-firebase-adminsdk-fbsvc-74acbb80a9.json
+
+# Ignorar compilados
+/target/
+/*.iml
+*.class
+
+# config de IDE
+.idea/
+*.iws
+*.ipr
+*.bak
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
