@@ -2,14 +2,14 @@ package com.echowave.backend.model;
 
 public class AudioDTO {
     private String fileName;
-    private String path;
+    private String url;
 
     public AudioDTO() {
     }
 
-    public AudioDTO(String fileName, String path) {
+    public AudioDTO(String fileName, String url) {
         this.fileName = fileName;
-        this.path = path;
+        this.url = url;
     }
 
     public String getFileName() {
@@ -20,11 +20,11 @@ public class AudioDTO {
         this.fileName = fileName;
     }
 
-    public String getPath() {
-        return path;
+    public String getUrl() {
+        return url;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setUrl(String url) {
+        this.url = url;
     }
 }
