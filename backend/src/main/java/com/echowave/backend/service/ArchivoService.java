@@ -1,5 +1,7 @@
 package com.echowave.backend.service;
 
+import com.echowave.backend.entity.AudioEntity;
+import com.echowave.backend.repository.AudioRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -11,9 +13,18 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.*;
+import java.time.LocalDateTime;
 
 @Service
 public class ArchivoService {
+
+    private final ArchivoUploader uploader;
+    private final AudioRepository audioRepository;
+
+    public ArchivoService(ArchivoUploader uploader, AudioRepository audioRepository) {
+        this.uploader = uploader;
+        this.audioRepository = audioRepository;
+    }
 
     private static final String[] TIPOS_PERMITIDOS = {
             "audio/mpeg"
@@ -37,39 +48,8 @@ public class ArchivoService {
         session.removeAttribute("audioFile");
     }
 
-    public File guardarArchivoPersistente(MultipartFile archivo) throws IOException {
-        String nombreOriginal = archivo.getOriginalFilename();
-
-        // Aseguramos que tenga una extensión válida
-        String extension = nombreOriginal != null && nombreOriginal.contains(".")
-                ? nombreOriginal.substring(nombreOriginal.lastIndexOf("."))
-                : ".mp3";
-
-        // Carpeta donde se guardarán los audios de forma permanente
-        Path directorioDestino = Paths.get("C:/EchoWave/audios");
-
-        // Crea el directorio si no existe
-        if (!Files.exists(directorioDestino)) {
-            Files.createDirectories(directorioDestino);
-        }
-
-        // Nombre del archivo: lo dejamos como original o le puedes agregar un timestamp si quieres evitar duplicados
-        String nombreArchivo = "echowave-" + System.currentTimeMillis() + extension;
-        Path rutaFinal = directorioDestino.resolve(nombreArchivo);
-
-        // Guardar archivo
-        archivo.transferTo(rutaFinal.toFile());
-
-        return rutaFinal.toFile();
-    }
-
-    public Resource cargarRecurso(String ruta) throws MalformedURLException {
-        Path file = Paths.get(ruta);
-        return new UrlResource(file.toUri());
-    }
-
-    public boolean existeArchivo(String ruta) {
-        return ruta != null && Files.exists(Paths.get(ruta));
+    public String subirArchivo(MultipartFile archivo, HttpSession session) throws IOException {
+        return uploader.subirArchivo(archivo, session);
     }
 
     public MediaType getTipoArchivo() {

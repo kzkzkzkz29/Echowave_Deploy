@@ -24,7 +24,7 @@ public class ListaReproduccionService {
         List<AudioDTO> playlist = obtener(session);
 
         boolean yaExiste = playlist.stream()
-                .anyMatch(a -> a.getFileName().equals(audio.getFileName()) && a.getPath().equals(audio.getPath()));
+                .anyMatch(a -> a.getFileName().equals(audio.getFileName()) && a.getUrl().equals(audio.getUrl()));
 
         if (!yaExiste) {
             playlist.add(audio);
