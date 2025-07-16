@@ -8,9 +8,9 @@ spring:
       max-request-size: 100MB
 
   datasource:
-    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:echowave}
-    username: ${DB_USER:root}
-    password: ${DB_PASS:}
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USER}
+    password: ${DB_PASS}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -23,7 +23,6 @@ spring:
 
   firebase:
     bucket: ${FIREBASE_BUCKET}
-    credentials: ${GOOGLE_APPLICATION_CREDENTIALS}
 
   logging:
     level:
