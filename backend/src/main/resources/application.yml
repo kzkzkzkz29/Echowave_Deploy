@@ -23,6 +23,7 @@ spring:
 
   firebase:
     bucket: ${FIREBASE_BUCKET}
+    credentials: ${FIREBASE_CREDENTIALS_BASE64}
 
   logging:
     level:

@@ -3,14 +3,18 @@ package com.echowave.backend.config;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
-import jakarta.annotation.PostConstruct;
 import java.io.ByteArrayInputStream;
 import java.util.Base64;
 
 @Configuration
 public class FirebaseEnvConfig {
+
+    @Value("${FIREBASE_BUCKET}")
+    private String firebaseBucket;
 
     @PostConstruct
     public void init() throws Exception {
@@ -23,7 +27,7 @@ public class FirebaseEnvConfig {
 
         FirebaseOptions options = new FirebaseOptions.Builder()
                 .setCredentials(GoogleCredentials.fromStream(new ByteArrayInputStream(decodedBytes)))
-                .setStorageBucket("echowave-b2c81.appspot.com") // nombre completo del bucket
+                .setStorageBucket(firebaseBucket)
                 .build();
 
         if (FirebaseApp.getApps().isEmpty()) {
@@ -31,3 +35,4 @@ public class FirebaseEnvConfig {
         }
     }
 }
+
