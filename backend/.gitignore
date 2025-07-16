@@ -14,6 +14,7 @@ src/main/resources/firebase/echowave-b2c81-firebase-adminsdk-fbsvc-74acbb80a9.js
 # Archivos de sistema
 .DS_Store
 Thumbs.db
+*.jar
 
 # Logs
 *.log

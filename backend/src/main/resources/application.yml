@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: ${PORT:8080}
 
 spring:
   servlet:
@@ -8,9 +8,9 @@ spring:
       max-request-size: 100MB
 
   datasource:
-    url: jdbc:mysql://localhost:3306/echowave
-    username: root
-    password: agusbenja29
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:echowave}
+    username: ${DB_USER:root}
+    password: ${DB_PASS:}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -20,6 +20,10 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+
+  firebase:
+    bucket: ${FIREBASE_BUCKET}
+    credentials: ${GOOGLE_APPLICATION_CREDENTIALS}
 
 logging:
   level:

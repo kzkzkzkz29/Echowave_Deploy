@@ -15,7 +15,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/archivo")
-@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:63342"}, allowCredentials = "true")
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001"}, allowCredentials = "true")
 public class ArchivoController {
 
     private final ArchivoService archivoService;
