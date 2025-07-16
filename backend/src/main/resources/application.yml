@@ -25,7 +25,11 @@ spring:
     bucket: ${FIREBASE_BUCKET}
     credentials: ${GOOGLE_APPLICATION_CREDENTIALS}
 
-logging:
-  level:
-    root: DEBUG
-    org.springframework.web: INFO
+  logging:
+    level:
+      root: INFO
+      org.springframework: DEBUG
+  spring:
+    main:
+      log-startup-info: true
+
