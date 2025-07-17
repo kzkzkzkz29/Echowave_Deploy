@@ -12,8 +12,14 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/playlist")
-@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001"}, allowCredentials = "true")
-public class ListaReproduccionController {
+@CrossOrigin(
+        origins = {
+                "http://localhost:3000", // para desarrollo local
+                "https://echowave-frontend.vercel.app", // dominio Vercel
+                "https://echowave-frontend-b40nqjryq-angels-projects-dfee7c94.vercel.app" // URL temporal de deploy
+        },
+        allowCredentials = "true"
+)public class ListaReproduccionController {
 
     private final ListaReproduccionService listaReproduccionService;
 

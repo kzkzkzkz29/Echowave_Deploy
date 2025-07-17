@@ -15,7 +15,14 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/archivo")
-@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001"}, allowCredentials = "true")
+@CrossOrigin(
+        origins = {
+                "http://localhost:3000",
+                "https://echowave-frontend.vercel.app",
+                "https://echowave-frontend-b40nqjryq-angels-projects-dfee7c94.vercel.app"
+        },
+        allowCredentials = "true"
+)
 public class ArchivoController {
 
     private final ArchivoService archivoService;
